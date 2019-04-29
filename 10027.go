@@ -27,15 +27,26 @@ func main() {
 		fmt.Printf("%c\n%d", s, n)
 		return
 	}
-	for i := 1; i <= 2*m-1; i++ {
-		for j := 1; j <= 2*m-1; j++ {
-			if (i <= j && j+i <= 2*m) || (j <= i && i+j >= 2*m) {
-				fmt.Printf("%c", s)
-			} else {
-				fmt.Printf(" ")
-			}
+	for i := 1; i <= m; i++ {
+		for j := 1; j < i; j++ {
+			fmt.Printf(" ")
+		}
+		for j := 0; j < 2*m-1-2*(i-1); j++ {
+			fmt.Printf("%c", s)
 		}
 		fmt.Printf("\n")
 	}
-	fmt.Printf("%d", n)
+	t := 3
+	for i := 1; i < m; i++ {
+		for j := 0; j < (2*m-1-t)/2; j++ {
+			fmt.Printf(" ")
+		}
+		for j := 0; j < t; j++ {
+			fmt.Printf("%c", s)
+		}
+		fmt.Println()
+		t += 2
+	}
+
+	fmt.Println(n)
 }

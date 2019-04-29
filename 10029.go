@@ -2,29 +2,27 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"unicode"
 )
 
 func main() {
+	var set [300]int
 	var s1, s2 string
-	fmt.Scanf("%s\n%s", &s1, &s2)
-	var t []byte
-	for i, j := 0, 0; i < len(s1) && j < len(s2); i++ {
-		if s1[i] != s2[j] {
-			mask := 0
-			for k := range t {
-				if strings.ToUpper(string(s1[i])) == strings.ToUpper(string(t[k])) {
-					mask = 1
-				}
-			}
-			if mask == 0 {
-				t = append(t, s1[i])
-			}
-		} else {
-			j++
+	fmt.Scan(&s1)
+	for i := 0; i < len(s1); i++ {
+		t := unicode.ToUpper(rune(s1[i]))
+		set[int(t)] = 1
+	}
+	fmt.Scan(&s2)
+	for i := 0; i < len(s2); i++ {
+		t := unicode.ToUpper(rune(s2[i]))
+		set[int(t)] = 0
+	}
+	for i := 0; i < len(s1); i++ {
+		t := unicode.ToUpper(rune(s1[i]))
+		if set[int(t)] == 1 {
+			set[int(t)] = 0
+			fmt.Printf("%c", t)
 		}
 	}
-	s := string(t)
-	s = strings.ToUpper(s)
-	fmt.Println(s)
 }

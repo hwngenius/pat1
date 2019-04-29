@@ -6,6 +6,10 @@ func main() {
 	var A, B, S, D, r int
 	fmt.Scanf("%d %d %d", &A, &B, &D)
 	S = A + B
+	if S == 0 {
+		fmt.Println(0)
+		return
+	}
 	r = D
 	for {
 		if r <= S {

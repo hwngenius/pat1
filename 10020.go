@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 type mooncake struct {
-	num   int
-	sum   int
-	price float32
+	num   float64
+	sum   float64
+	price float64
 }
 
 func sort(p *[1000]mooncake, N int) {
@@ -20,27 +20,27 @@ func sort(p *[1000]mooncake, N int) {
 
 func main() {
 	var sample [1000]mooncake
-	var N, need int
-	var bonus float32
-	fmt.Scanf("%d %d", &N, &need)
+	var N int
+	var bonus, need float64
+	fmt.Scanf("%d %f", &N, &need)
 	//fmt.Println(need)
 	for i := 0; i < N; i++ {
-		fmt.Scanf("%d", &sample[i].num)
+		fmt.Scanf("%f", &sample[i].num)
 	}
 	for i := 0; i < N; i++ {
-		fmt.Scanf("%d", &sample[i].sum)
-		sample[i].price = float32(sample[i].sum) / float32(sample[i].num)
+		fmt.Scanf("%f", &sample[i].sum)
+		sample[i].price = float64(sample[i].sum) / float64(sample[i].num)
 	}
 	sort(&sample, N)
 	for i := 0; i < N; i++ {
 		if need > sample[i].num {
 			need -= sample[i].num
-			bonus += float32(sample[i].sum)
+			bonus += float64(sample[i].sum)
 		} else if need == sample[i].num {
-			bonus += float32(sample[i].sum)
+			bonus += float64(sample[i].sum)
 			break
 		} else {
-			bonus += float32(sample[i].price * float32(need))
+			bonus += float64(sample[i].price * float64(need))
 			break
 		}
 		//fmt.Println(sample[i].price, bonus, need)

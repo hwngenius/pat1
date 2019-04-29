@@ -2,28 +2,27 @@ package main
 
 import "fmt"
 
-func main() {
-	var N, M int
-	var p [100]int
-	fmt.Scanf("%d%d", &N, &M)
+func reserve(n []int) {
+	for i, j := 0, len(n)-1; i < j; i, j = i+1, j-1 {
+		n[i], n[j] = n[j], n[i]
+	}
+}
 
+func main() {
+	var N, M, input int
+	var sample []int
+	fmt.Scanf("%d %d", &N, &M)
 	for i := 0; i < N; i++ {
-		fmt.Scanf("%d", &p[i])
+		fmt.Scan(&input)
+		sample = append(sample, input)
 	}
-	M %= N
-	j := 0
-	for i := N - M; i < N; i++ {
-		fmt.Printf("%d", p[i])
-		j++
-		if j != N {
+	reserve(sample[N-M%N:])
+	reserve(sample[:N-M%N])
+	reserve(sample[:])
+	for i := 0; i < len(sample); i++ {
+		if i > 0 {
 			fmt.Printf(" ")
 		}
-	}
-	for i := 0; i < N-M; i++ {
-		fmt.Printf("%d", p[i])
-		j++
-		if j != N {
-			fmt.Printf(" ")
-		}
+		fmt.Printf("%d", sample[i])
 	}
 }

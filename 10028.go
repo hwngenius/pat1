@@ -2,78 +2,49 @@ package main
 
 import "fmt"
 
-func isright(y, m, d int) (i bool) {
-	if y > 2014 {
-		i = false
-	} else if y == 2014 {
-		if m > 9 {
-			i = false
-		} else if m == 9 {
-			if d > 6 {
-				i = false
-			} else {
-				i = true
-			}
-		}
-	} else if y < 1814 {
-		i = false
-	} else if y == 1814 {
-		if m < 9 {
-			i = false
-		} else if m == 9 {
-			if d < 6 {
-				i = false
-			} else {
-				i = true
-			}
-		}
-	} else {
-		i = true
-	}
-
-	return
+type person struct {
+	yy int
+	mm int
+	dd int
 }
 
-func young(y1, m1, d1, y2, m2, d2 int) (i bool) {
-	if y1 != y2 {
-		return y1 > y2
-	} else if m1 != m2 {
-		return m1 > m2
+func older(a, b person) bool {
+	if a.yy != b.yy {
+		return (a.yy) < (b.yy)
+	} else if a.mm != b.mm {
+		return (a.mm) < (b.mm)
 	} else {
-		return d1 > d2
+		return (a.dd) <= (b.dd)
 	}
-}
-
-type birth struct {
-	name string
-	y    int
-	m    int
-	d    int
 }
 
 func main() {
-	var sample, y, o birth
-	sample = birth{"Tom", 1814, 9, 6}
-	var n, sum, mask int = 5, 0, 0
-	fmt.Scanf("%d", &n)
-	for i := 0; i < n; i++ {
-		fmt.Scanf("%s %d/%d/%d", &sample.name, &sample.y, &sample.m, &sample.d)
-		if isright(sample.y, sample.m, sample.d) {
-			if mask == 0 {
-				y = sample
-				o = sample
-				mask = 1
-			}
+	var input person
+	var oldest = person{2014, 9, 6}
+	var youngest = person{1814, 9, 6}
+	var left = youngest
+	var right = oldest
+	var N, sum int
+	var name, oldname, youngname string
+
+	fmt.Scan(&N)
+	for i := 0; i < N; i++ {
+		fmt.Scanf("%s %d/%d/%d", &name, &input.yy, &input.mm, &input.dd)
+		if older(input, right) && older(left, input) {
 			sum++
-			// fmt.Println(sum, sample)
-			if !young(sample.y, sample.m, sample.d, o.y, o.m, o.d) {
-				o = sample
-				//fmt.Println(o)
-			} else if young(sample.y, sample.m, sample.d, y.y, y.m, y.d) {
-				y = sample
-				//fmt.Println(y)
+			if older(input, oldest) {
+				oldname = name
+				oldest = input
+			}
+			if older(youngest, input) {
+				youngname = name
+				youngest = input
 			}
 		}
 	}
-	fmt.Printf("%d %s %s", sum, o.name, y.name)
+	if sum != 0 {
+		fmt.Println(sum, oldname, youngname)
+	} else {
+		fmt.Println(0)
+	}
 }

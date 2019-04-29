@@ -1,84 +1,109 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
-//0 no,1 win 2 loss
-func cmp(x, y byte) (r int) {
-	switch x {
+func int2byte(n int) (r byte) {
+	switch n {
+	case 0:
+		r = 'B'
+	case 1:
+		r = 'C'
+	case 2:
+		r = 'J'
+	default:
+		r = ','
+	}
+	return
+}
+func byte2int(b byte) (n int) {
+	switch b {
+	case 'B':
+		n = 0
 	case 'C':
-		switch y {
-		case 'C':
-			r = 0
-		case 'J':
-			r = 1
+		n = 1
+	case 'J':
+		n = 2
+	default:
+		n = 0
+	}
+	return
+}
+func play(a1, a2 byte) (n int) { //-1,a1 win;0,none win;1,a2 win.
+	switch a1 {
+	case 'B':
+		switch a2 {
 		case 'B':
-			r = 2
+			n = 0
+		case 'C':
+			n = -1
+		case 'J':
+			n = 1
 		}
 	case 'J':
-		switch y {
-		case 'C':
-			r = 2
-		case 'J':
-			r = 0
+		switch a2 {
 		case 'B':
-			r = 1
+			n = -1
+		case 'C':
+			n = 1
+		case 'J':
+			n = 0
 		}
-	case 'B':
-		switch y {
-		case 'C':
-			r = 1
-		case 'J':
-			r = 2
+	case 'C':
+		switch a2 {
 		case 'B':
-			r = 0
+			n = 1
+		case 'C':
+			n = 0
+		case 'J':
+			n = -1
 		}
 	}
 	return
 }
-
 func main() {
-	var n, no, win, loss int
-	xN := make(map[byte]int)
-	yN := make(map[byte]int)
-	xN['B'] = 0
-	xN['C'] = 0
-	xN['J'] = 0
-	yN['B'] = 0
-	yN['C'] = 0
-	yN['J'] = 0
-	var x, y byte
-	fmt.Scanf("%d", &n)
-	for i := 0; i < n; i++ {
-		fmt.Scanf("%c %c\n", &x, &y)
-		t := cmp(x, y)
+	var N int
+	var a1, a2 byte
+	var a1Win, a2Win [3]int
+	var win, loss, nowin int
+	input := bufio.NewScanner(os.Stdin)
+	fmt.Scan(&N)
+	for input.Scan() {
+		l := strings.Split(input.Text(), " ")
+		a1 = l[0][0]
+		a2 = l[1][0]
+		t := play(a1, a2)
 		if t == 0 {
-			no++
+			nowin++
 		} else if t == 1 {
-			xN[x]++
-			win++
-		} else if t == 2 {
 			loss++
-			yN[y]++
+			a2Win[byte2int(a2)]++
+		} else {
+			win++
+			a1Win[byte2int(a1)]++
 		}
 	}
-	fmt.Println(win, no, loss)
-	fmt.Println(loss, no, win)
-	var l1, l2 byte
-	var max int
-	for i1 := range xN {
-		//fmt.Printf("%c %d\n", i1, xN[i1])
-		if xN[i1] > max {
-			max = xN[i1]
-			l1 = i1
+	fmt.Println(win, nowin, loss)
+	fmt.Println(loss, nowin, win)
+	var max1, max2 int
+	var i1, i2 int
+	for i := 0; i < 3; i++ {
+		if max1 < a1Win[i] {
+			max1 = a1Win[i]
+			i1 = i
 		}
 	}
-	max = 0
-	for i1 := range yN {
-		//fmt.Printf("%c %d\n", i1, yN[i1])
-		if yN[i1] > max {
-			max = yN[i1]
-			l2 = i1
+	for i := 0; i < 3; i++ {
+		if max2 < a2Win[i] {
+			max2 = a2Win[i]
+			i2 = i
 		}
 	}
-	fmt.Printf("%c %c", l1, l2)
+	// fmt.Println(a1Win)
+	// fmt.Println(a2Win)
+	fmt.Printf("%c %c", int2byte(i1), int2byte(i2))
 }
